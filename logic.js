@@ -10,14 +10,19 @@ let currentIndex = 0;
 let timer = document.querySelector('#time');
 let timeLeft = 60;
 let endDiv = document.querySelector('#end');
+let timeInterval;
+let initialBtn = document.querySelector('#initialBtn');
+let initial = document.querySelector('#initials');
+let final = document.querySelector('#highscores');
 
 function endQuiz() {
     quizDiv.classList.add('hide')
     endDiv.classList.remove('hide')
+    clearInterval(timeInterval)
 }
 
 function startTimer () {
-setInterval(function(){
+    timeInterval = setInterval(function(){
     timer.textContent = timeLeft
     timeLeft--
 
@@ -47,6 +52,32 @@ if(currentIndex < 4){
     endQuiz()
 }
 }
+
+initialBtn.addEventListener('click', function(){
+    startDiv.classList.add('hide')
+    quizDiv.classList.add('hide')
+    endDiv.classList.add('hide')
+    timer.classList.add('hide')
+    final.classList.remove('hide')
+
+
+    let highscores = JSON.parse(window.localStorage.getItem('highscores')) || [];
+
+
+    let newScore = {
+        initial: initial.value, 
+        Score: timeLeft
+    }
+
+    highscores.push(newScore);
+
+    localStorage.setItem('highscores', JSON.stringify(highscores))
+
+
+    document.getElementById('scores').textContent = localStorage.getItem('highscores');
+
+
+})
 
 startBtn.addEventListener('click', function(){
     startDiv.classList.add('hide')
